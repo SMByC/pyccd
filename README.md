@@ -1,6 +1,6 @@
 # PyCCD - Python Continuous Change Detection
-pyccd creates change segments from Landsat timeseries data  
 
+pyccd creates change segments from Landsat timeseries data  
 
 ## Using PyCCD
 ```python
@@ -127,6 +127,7 @@ run ```make profile```.  Remove decorations before committing code.
 
 ## Contributing
 Contributions to pyccd are most welcome.
+
 1. Open an issue and discuss the change.
 2. Branch from develop and name it after the issue
    * gitlab/123 if gitlab issue
