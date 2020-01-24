@@ -20,6 +20,10 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'ccd', 'version.py')) as h:
     exec(h.read())
 
+def readme():
+    with open('README.md') as f:
+        return f.read()
+
 setup(
 
     # __name is defined in version.py
@@ -33,7 +37,8 @@ setup(
     version=__version__,
 
     description='Python implementation of Continuous Change Detection',
-    long_description=__doc__,
+    long_description=readme(),
+    long_description_content_type="text/markdown",
     url='https://github.com/usgs-eros/lcmap-pyccd',
     maintainer='klsmith-usgs',
     maintainer_email='kelcy.smith.ctr@usgs.gov',
@@ -75,6 +80,10 @@ setup(
                  'pytest-watch>=4.1.0'],
         'dev': ['jupyter',
                 'line_profiler'],
+        'docs': ['sphinx',
+                 'sphinx-autobuild',
+                 'sphinx_rtd_theme'],
+        'deploy': ['twine']
     },
 
     setup_requires=['pytest-runner', 'pip'],
