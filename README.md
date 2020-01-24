@@ -1,5 +1,5 @@
 # PyCCD - Python Continuous Change Detection
-pyccd exists to provide the simplest possible implementation of ccd.
+pyccd creates change segments from Landsat timeseries data
 
 ## Using PyCCD
 ```python
@@ -55,7 +55,7 @@ pyccd exists to provide the simplest possible implementation of ccd.
 
 ```
 
-Default processing parameters can be over-ridden using a dictionary (see parameters.yaml for valid keys):  
+Default processing parameters can be overridden using a dictionary (see parameters.yaml for valid keys):
 
 ```python
 >>> import ccd
@@ -95,29 +95,17 @@ user@dev:/home/user/pyccd$ . .venv/bin/activate
 (.venv) user@dev:/home/user/pyccd$
 ```
 
-The rest of the command prompts are truncated to ```$``` for readability, but assume an activated virtual environment and pwd as above, or that you know what you are doing.
-
-##### Clone the repo
+##### Get the code
 ```bash
 $ git clone https://github.com/usgs-eros/lcmap-pyccd.git
 ```
-or if you have ssh keys set up in github:
+
+##### Install
 ```bash
-$ git clone git@github.com:usgs-eros/lcmap-pyccd.git
+$ pip install -e .[test,dev,docs,deploy,profile]
 ```
 
-##### Install dev dependencies
-Install jupyter notebook and line_profiler
-```bash
-$ pip install -e .[dev]
-```
-
-##### Install test dependencies
-```bash
-$ pip install -e .[test]
-```
-
-## Testing & Running
+## Testing
 ```bash
 $ pytest
 $ pytest --profile
@@ -127,17 +115,25 @@ $ pytest --profile-svg
 $ ptw
 ```
 
+## Make targets
+```bash
+$ make build
+$ make tests
+$ make docs
+$ make deploy
+$ make profile
+```
+
 ## Profiling
 Decorate the function to be profiled with ```@profile``` and
 run ```make profile```.  Remove decorations before committing code.
 
 
 ## Contributing
-Contributions to pyccd are most welcome, just be sure to thoroughly review the guidelines first.
+Contributions to pyccd are most welcome.
 
-[Contributing](docs/CONTRIBUTING.md)
+Please review the [developers guide](docs/DEVELOPING.md), fork the repo and submit pull requests.
 
-[Developers Guide](docs/DEVELOPING.md)
 
 ## Versions
 PyCCD previously followed MAJOR.MINOR.PATCH.LABEL semantic versioning but has
