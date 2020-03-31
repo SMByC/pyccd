@@ -20,6 +20,10 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'ccd', 'version.py')) as h:
     exec(h.read())
 
+def readme():
+    with open('README.md') as f:
+        return f.read()
+
 setup(
 
     # __name is defined in version.py
@@ -33,25 +37,18 @@ setup(
     version=__version__,
 
     description='Python implementation of Continuous Change Detection',
-    long_description=__doc__,
-    url='https://github.com/usgs-eros/lcmap-pyccd',
-    maintainer='klsmith-usgs',
-    maintainer_email='kelcy.smith.ctr@usgs.gov',
+    long_description=readme(),
+    long_description_content_type="text/markdown",
+    url='https://code.usgs.gov/lcmap/pyccd',
+    maintainer='Kelcy Smith',
+    maintainer_email='klsmith@contractor.usgs.gov',
     license='Public Domain',
 
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
-        #   3 - Alpha
-        #   4 - Beta
-        #   5 - Production/Stable
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: Public Domain',
-
-        # 'Programming Language :: Python :: 2',
-        # 'Programming Language :: Python :: 2.7',
-        # 'Programming Language :: Python :: 3',
-        # 'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
@@ -64,7 +61,7 @@ setup(
     install_requires=['numpy>=1.10.0',
                       'scipy>=0.18.1',
                       'scikit-learn>=0.18'],
-
+    
     extras_require={
         'test': ['aniso8601>=1.1.0',
                  'flake8>=3.0.4',
@@ -75,17 +72,12 @@ setup(
                  'pytest-watch>=4.1.0'],
         'dev': ['jupyter',
                 'line_profiler'],
+        'docs': ['sphinx',
+                 'sphinx-autobuild',
+                 'sphinx_rtd_theme'],
+        'deploy': ['twine']
     },
 
     setup_requires=['pytest-runner', 'pip'],
     tests_require=['pytest>=3.0.2'],
-
-    # data_files=[('my_data', ['data/data_file'])],
-
-    # entry_points={'console_scripts': ['pyccd-detect=ccd.cli:detect', ], },
-    # entry_points='''
-    #     [core_package.cli_plugins]
-    #     sample=ccd.cli:sample
-    #     another_subcommand=ccd.cli:another_subcommand
-    # ''',
 )

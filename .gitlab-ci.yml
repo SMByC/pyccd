@@ -1,0 +1,36 @@
+image: python:3.8
+
+before_script:
+  - pip install --upgrade pip
+  
+stages:
+  - development
+  - release
+
+development:
+  stage: development
+  script:
+    - make build
+    - make tests
+  tags:
+    - docker
+    - eros
+    - lcmap
+  except:
+    - tags
+
+release:
+  stage: release
+  variables:
+    TWINE_USERNAME: $TWINE_USERNAME
+    TWINE_PASSWORD: $TWINE_PASSWORD
+  script:
+    - make build
+    - make tests
+    - make deploy
+  tags:
+    - docker
+    - eros
+    - lcmap
+  only:
+    - tags

@@ -1,5 +1,6 @@
 # PyCCD - Python Continuous Change Detection
-pyccd exists to provide the simplest possible implementation of ccd.
+pyccd creates change segments from Landsat timeseries data  
+
 
 ## Using PyCCD
 ```python
@@ -55,7 +56,7 @@ pyccd exists to provide the simplest possible implementation of ccd.
 
 ```
 
-Default processing parameters can be over-ridden using a dictionary (see parameters.yaml for valid keys):  
+Default processing parameters can be overridden using a dictionary (see parameters.yaml for valid keys):
 
 ```python
 >>> import ccd
@@ -95,29 +96,12 @@ user@dev:/home/user/pyccd$ . .venv/bin/activate
 (.venv) user@dev:/home/user/pyccd$
 ```
 
-The rest of the command prompts are truncated to ```$``` for readability, but assume an activated virtual environment and pwd as above, or that you know what you are doing.
-
-##### Clone the repo
+##### Install
 ```bash
-$ git clone https://github.com/usgs-eros/lcmap-pyccd.git
-```
-or if you have ssh keys set up in github:
-```bash
-$ git clone git@github.com:usgs-eros/lcmap-pyccd.git
+$ pip install -e .[test,dev,docs,deploy,profile]
 ```
 
-##### Install dev dependencies
-Install jupyter notebook and line_profiler
-```bash
-$ pip install -e .[dev]
-```
-
-##### Install test dependencies
-```bash
-$ pip install -e .[test]
-```
-
-## Testing & Running
+## Testing
 ```bash
 $ pytest
 $ pytest --profile
@@ -127,31 +111,42 @@ $ pytest --profile-svg
 $ ptw
 ```
 
+## Make targets
+```bash
+$ make build
+$ make tests
+$ make docs
+$ make deploy
+$ make profile
+```
+
 ## Profiling
 Decorate the function to be profiled with ```@profile``` and
 run ```make profile```.  Remove decorations before committing code.
 
 
 ## Contributing
-Contributions to pyccd are most welcome, just be sure to thoroughly review the guidelines first.
-
-[Contributing](docs/CONTRIBUTING.md)
-
-[Developers Guide](docs/DEVELOPING.md)
+Contributions to pyccd are most welcome.
+1. Open an issue and discuss the change.
+2. Branch from develop and name it after the issue
+   * gitlab/123 if gitlab issue
+   * jira/123 if jira issue
+3. Write automated tests for your changes and make sure all tests pass.
+4. Update documentation in project.
+5. Submit pull request to develop.
 
 ## Versions
 PyCCD previously followed MAJOR.MINOR.PATCH.LABEL semantic versioning but has
 changed to date based semantic versioning, thus: YYYY.MM.DD[.HH.MM.SS][-label].
 
-PyCCD's version is defined by the ```ccd/version.py/__version__``` attribute
-ONLY.
+PyCCD's version is defined by the ```ccd/version.py/__version__``` attribute.
 
-See [Semantic Versioning](http://semver.org/).
 ## References
 
 Links
 * [Test Data](docs/TestData.md)
-* [Reference Implementation](https://github.com/USGS-EROS/matlab-ccdc/blob/master/TrendSeasonalFit_v12_30ARDLine.m)
 * [Landsat Band Specifications](http://landsat.usgs.gov/band_designations_landsat_satellites.php)
 * [Landsat 8 Surface Reflectance Specs](http://landsat.usgs.gov/documents/provisional_lasrc_product_guide.pdf)
 * [Landsat 4-7 Surface Reflectance Specs](http://landsat.usgs.gov/documents/cdr_sr_product_guide.pdf)
+* [Landsat Analysis Ready Data](https://www.usgs.gov/land-resources/nli/landsat/us-landsat-analysis-ready-data)
+* [LCMAP CCDC Collection 1.0 Algorithm Description Document](https://www.usgs.gov/media/files/lcmap-ccdc-add)
