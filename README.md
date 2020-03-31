@@ -1,5 +1,6 @@
 # PyCCD - Python Continuous Change Detection
-pyccd creates change segments from Landsat timeseries data
+pyccd creates change segments from Landsat timeseries data  
+
 
 ## Using PyCCD
 ```python
@@ -95,11 +96,6 @@ user@dev:/home/user/pyccd$ . .venv/bin/activate
 (.venv) user@dev:/home/user/pyccd$
 ```
 
-##### Get the code
-```bash
-$ git clone https://github.com/usgs-eros/lcmap-pyccd.git
-```
-
 ##### Install
 ```bash
 $ pip install -e .[test,dev,docs,deploy,profile]
@@ -131,23 +127,26 @@ run ```make profile```.  Remove decorations before committing code.
 
 ## Contributing
 Contributions to pyccd are most welcome.
-
-Please review the [developers guide](docs/DEVELOPING.md), fork the repo and submit pull requests.
-
+1. Open an issue and discuss the change.
+2. Branch from develop and name it after the issue
+   * gitlab/123 if gitlab issue
+   * jira/123 if jira issue
+3. Write automated tests for your changes and make sure all tests pass.
+4. Update documentation in project.
+5. Submit pull request to develop.
 
 ## Versions
 PyCCD previously followed MAJOR.MINOR.PATCH.LABEL semantic versioning but has
 changed to date based semantic versioning, thus: YYYY.MM.DD[.HH.MM.SS][-label].
 
-PyCCD's version is defined by the ```ccd/version.py/__version__``` attribute
-ONLY.
+PyCCD's version is defined by the ```ccd/version.py/__version__``` attribute.
 
-See [Semantic Versioning](http://semver.org/).
 ## References
 
 Links
 * [Test Data](docs/TestData.md)
-* [Reference Implementation](https://github.com/USGS-EROS/matlab-ccdc/blob/master/TrendSeasonalFit_v12_30ARDLine.m)
 * [Landsat Band Specifications](http://landsat.usgs.gov/band_designations_landsat_satellites.php)
 * [Landsat 8 Surface Reflectance Specs](http://landsat.usgs.gov/documents/provisional_lasrc_product_guide.pdf)
 * [Landsat 4-7 Surface Reflectance Specs](http://landsat.usgs.gov/documents/cdr_sr_product_guide.pdf)
+* [Landsat Analysis Ready Data](https://www.usgs.gov/land-resources/nli/landsat/us-landsat-analysis-ready-data)
+* [LCMAP CCDC Collection 1.0 Algorithm Description Document](https://www.usgs.gov/media/files/lcmap-ccdc-add)

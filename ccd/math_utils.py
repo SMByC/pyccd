@@ -12,10 +12,6 @@ from functools import wraps
 import numpy as np
 from scipy.stats import mode
 
-# TODO: Cache timings
-# TODO: Numba timings
-
-
 def adjusted_variogram(dates, observations):
     """
     Calculate a modified first order variogram/madogram.
