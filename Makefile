@@ -31,4 +31,6 @@ test-deploy:
                       dist/*
 
 clean:
-	@rm -rf build dist *egg-info* sphinx-docs
+	@rm -rf build dist *egg-info* sphinx-docs;
+	@find . -type d -name "*pycache*" -exec rm -rf {} \;
+	@find . -type f -name "*~" -exec rm -rf {} \;

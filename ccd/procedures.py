@@ -19,8 +19,6 @@ step.
 
 For more information please refer to the pyccd Algorithm Description Document.
 
-.. _Algorithm Description Document:
-   https://drive.google.com/drive/folders/0BzELHvbrg1pDREJlTF8xOHBZbEU
 """
 import logging
 import numpy as np
@@ -50,7 +48,7 @@ def fit_procedure(quality, proc_params):
         method: the corresponding method that will be use to generate
          the curves
     """
-    # TODO do this better
+
     clear = proc_params.QA_CLEAR
     water = proc_params.QA_WATER
     fill = proc_params.QA_FILL
@@ -96,7 +94,7 @@ def permanent_snow_procedure(dates, observations, fitter_fn, quality,
         1-d ndarray: processing mask indicating which values were used
             for model fitting
     """
-    # TODO do this better
+
     meow_size = proc_params.MEOW_SIZE
     curve_qa = proc_params.CURVE_QA['PERSIST_SNOW']
     avg_days_yr = proc_params.AVG_DAYS_YR
@@ -117,7 +115,6 @@ def permanent_snow_procedure(dates, observations, fitter_fn, quality,
 
     magnitudes = np.zeros(shape=(observations.shape[0],))
 
-    # White space is cheap, so let's use it
     result = results_to_changemodel(fitted_models=models,
                                     start_day=dates[0],
                                     end_day=dates[-1],
@@ -154,7 +151,7 @@ def insufficient_clear_procedure(dates, observations, fitter_fn, quality,
         1-d ndarray: processing mask indicating which values were used
             for model fitting
         """
-    # TODO do this better
+
     meow_size = proc_params.MEOW_SIZE,
     curve_qa = proc_params.CURVE_QA['INSUF_CLEAR']
     avg_days_yr = proc_params.AVG_DAYS_YR
@@ -222,7 +219,7 @@ def standard_procedure(dates, observations, fitter_fn, quality, proc_params):
         1-d ndarray: processing mask indicating which values were used
             for model fitting
     """
-    # TODO do this better
+
     meow_size = proc_params.MEOW_SIZE
     defpeek = proc_params.PEEK_SIZE
     thermal_idx = proc_params.THERMAL_IDX
@@ -379,7 +376,7 @@ def initialize(dates, observations, fitter_fn, model_window, processing_mask,
         slice: model window that was deemed to be a stable start
         namedtuple: fitted regression models
     """
-    # TODO do this better
+
     meow_size = proc_params.MEOW_SIZE
     day_delta = proc_params.DAY_DELTA
     detection_bands = proc_params.DETECTION_BANDS
@@ -500,7 +497,7 @@ def lookforward(dates, observations, model_window, fitter_fn, processing_mask,
         1-d bool ndarray: processing mask that may have been modified
         slice: model window
     """
-    # TODO do this better
+
     peek_size = proc_params.PEEK_SIZE
     coef_min = proc_params.COEFFICIENT_MIN
     coef_mid = proc_params.COEFFICIENT_MID
@@ -654,7 +651,7 @@ def lookback(dates, observations, model_window, models, previous_break,
         slice: window of indices to be used
         array: indices of data that have been flagged as outliers
     """
-    # TODO do this better
+
     peek_size = proc_params.PEEK_SIZE
     detection_bands = proc_params.DETECTION_BANDS
     change_thresh = proc_params.CHANGE_THRESHOLD
@@ -687,8 +684,6 @@ def lookback(dates, observations, model_window, models, previous_break,
                                              spectral_obs[idx, peek_window],
                                              models[idx], avg_days_yr)
                               for idx in range(observations.shape[0])])
-
-        # log.debug('Residuals for peek window: %s', residuals)
 
         comp_rmse = [models[idx].rmse for idx in detection_bands]
 
@@ -741,7 +736,7 @@ def catch(dates, observations, fitter_fn, processing_mask, model_window,
         namedtuple representing the time segment
 
     """
-    # TODO do this better
+
     avg_days_yr = proc_params.AVG_DAYS_YR
     fit_max_iter = proc_params.LASSO_MAX_ITER
     num_coef = proc_params.COEFFICIENT_MIN
