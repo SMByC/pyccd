@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file. Changes bef
 ## [2018.10.17]
 ### Added
  - Additional testing for main detect() method to ensure all the code is flexed to some degree
+ - link to Algorithm Description Document (ADD)
+ - link to Analysis Ready Data (ARD) information
 
 ### Changed
  - The number of observations used to detect change is now variable, and dependant on input characteristics
@@ -12,6 +14,7 @@ All notable changes to this project will be documented in this file. Changes bef
 ### Removed
  - pyyaml dependency
  - parameters.yaml file dependency
+ - docs directory (superseded by ADD)
   
 ## [2018.03.12]
 ### Added
