@@ -1,5 +1,5 @@
 # PyCCD - Python Continuous Change Detection
-pyccd creates change segments from Landsat timeseries data
+pyccd creates change segments from Landsat timeseries data  
 
 ## Using PyCCD
 ```python
