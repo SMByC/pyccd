@@ -112,15 +112,15 @@ All notable changes to this project will be documented in this file. Changes bef
 ## 1.0.0.a1 - 2016-10-13
  - Proof of concept for moving the CCDC code base to python
 
-[1.0.0.b1]: https://github.com/usgs-eros/lcmap-pyccd/compare/1.0.0.a1...1.0.0.b1
-[1.0.4.b1]: https://github.com/usgs-eros/lcmap-pyccd/compare/1.0.0.b1...v1.0.4.b1
-[1.1.0]: https://github.com/usgs-eros/lcmap-pyccd/compare/v1.0.4.b1...v1.1.0
-[1.3.0]: https://github.com/usgs-eros/lcmap-pyccd/compare/v1.1.0...v1.3.0
-[1.3.1]: https://github.com/usgs-eros/lcmap-pyccd/compare/v1.3.0...v1.3.1
-[1.4.0]: https://github.com/usgs-eros/lcmap-pyccd/compare/v1.3.1...v1.4.0
-[2017.6.8]: https://github.com/usgs-eros/lcmap-pyccd/compare/v1.4.0...v2017.6.8
-[2017.06.20]: https://github.com/usgs-eros/lcmap-pyccd/compare/v2017.6.8...v2017.06.20
-[2017.08.18]: https://github.com/usgs-eros/lcmap-pyccd/compare/v2017.06.20...v2017.08.18
-[2017.10.27]: https://github.com/usgs-eros/lcmap-pyccd/compare/v2017.08.18...v2017.10.27
-[2018.03.12]: https://github.com/usgs-eros/lcmap-pyccd/compare/v2017.10.27...v2018.03.12
-[2018.10.17]: https://github.com/usgs-eros/lcmap-pyccd/compare/v2017.03.12...v2018.10.17
+[1.0.0.b1]: https://code.usgs.gov/lcmap/pyccd/compare/1.0.0.a1...1.0.0.b1
+[1.0.4.b1]: https://code.usgs.gov/lcmap/pyccd/compare/1.0.0.b1...v1.0.4.b1
+[1.1.0]: https://code.usgs.gov/lcmap/pyccd/compare/v1.0.4.b1...v1.1.0
+[1.3.0]: https://code.usgs.gov/lcmap/pyccd/compare/v1.1.0...v1.3.0
+[1.3.1]: https://code.usgs.gov/lcmap/pyccd/compare/v1.3.0...v1.3.1
+[1.4.0]: https://code.usgs.gov/lcmap/pyccd/compare/v1.3.1...v1.4.0
+[2017.6.8]: https://code.usgs.gov/lcmap/pyccd/compare/v1.4.0...v2017.6.8
+[2017.06.20]: https://code.usgs.gov/lcmap/pyccd/compare/v2017.6.8...v2017.06.20
+[2017.08.18]: https://code.usgs.gov/lcmap/pyccd/compare/v2017.06.20...v2017.08.18
+[2017.10.27]: https://code.usgs.gov/lcmap/pyccd/compare/v2017.08.18...v2017.10.27
+[2018.03.12]: https://code.usgs.gov/lcmap/pyccd/compare/v2017.10.27...v2018.03.12
+[2018.10.17]: https://code.usgs.gov/lcmap/pyccd/compare/v2017.03.12...v2018.10.17

@@ -1,5 +1,6 @@
 build/*
 prof/*
+dist/*
 .cache/
 *.egg*
 pyccd.egg-info/*
@@ -10,3 +11,6 @@ pip-selfcheck.json
 *.ipynb_checkpoints
 .idea/
 .pytest_cache/
+
+# Ignore files open in editors
+*.swp

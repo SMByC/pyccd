@@ -1,0 +1,43 @@
+[
+    {
+    "name": "PyCCD"
+    "organization": "U.S. Geological Survey",
+    "description": "Change detection algorithm for Land Change Monitoring, Assessment and Projection (LCMAP)",
+    "version": "v2018-10-17",
+    "status": "Approved software",
+    "permissions": {
+	"usageType": "openSource",
+	"licenses": [
+	    {
+		"name": "Unlicense",
+		"URL": "https://code.usgs.gov/lcmap/pyccd/-/raw/master/LICENSE",
+	    }
+	]
+    },    
+    "homepage": "https://code.usgs.gov/lcmap/pyccd",
+    "downloadURL": "https://code.usgs.gov/lcmap/pyccd",
+    "disclaimerURL": "https://code.usgs.gov/lcmap/pyccd/-/raw/master/DISCLAIMER.md",
+    "openSourceProject": 1,
+
+    "vcs": "git",
+    "laborHours": null,
+    "repository": "https://code.usgs.gov/lcmap/pyccd",
+
+    "tags": [
+	"LCMAP",
+	"CCD",
+	"CCDC",
+    ],
+    "languages": [
+	"Python",
+    ],
+
+    "contact": {
+	"name": "David Hill",
+	"email": "dhill@contractor.usgs.gov"
+    },
+    "updated": {
+	"metadataLastUpdated": "2020-03-20"
+    }
+    }
+]
