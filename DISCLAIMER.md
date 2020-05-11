@@ -1,4 +1,4 @@
-US Geological Survey Disclaimer
+U.S. Geological Survey Disclaimer
 ==========
 
 This software has been approved for release by the U.S. Geological Survey
