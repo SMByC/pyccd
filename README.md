@@ -126,14 +126,27 @@ run ```make profile```.  Remove decorations before committing code.
 
 
 ## Contributing
-Contributions to pyccd are most welcome.
+
+Before committing to this repository, run the following command.
+
+```bash
+git config --local commit.template .gitmessage
+```
+
+This will add the LCMAP commit template to `git commit`.
+
+```text
+jira/lcmap-xxxx: Title
+Description
+```
+
+Contributions are most welcome.
 1. Open an issue and discuss the change.
-2. Branch from develop and name it after the issue
-   * gitlab/123 if gitlab issue
-   * jira/123 if jira issue
+2. Branch from major version and name it after the issue
+   * jira/lcmap-xxxx
 3. Write automated tests for your changes and make sure all tests pass.
 4. Update documentation in project.
-5. Submit pull request to develop.
+5. Submit pull request to the appropriate branch (e.g. 1,x)
 
 ## Versions
 PyCCD previously followed MAJOR.MINOR.PATCH.LABEL semantic versioning but has
