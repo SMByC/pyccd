@@ -27,26 +27,53 @@ from ccd import qa
 from ccd.change import enough_samples, enough_time,\
     update_processing_mask, stable, determine_num_coefs, calc_residuals, \
     find_closest_doy, change_magnitude, detect_change, detect_outlier, \
-    adjustpeek, adjustchgthresh
-from ccd.models import results_to_changemodel, tmask
+    adjustpeek, adjustchgthresh, statmask, jumpstart, prevmask, span
+from ccd.models import results_to_changemodel, tmask, results_fromprev
 from ccd.math_utils import kelvin_to_celsius, adjusted_variogram, euclidean_norm
 
 
 log = logging.getLogger(__name__)
 
 
-def fit_procedure(quality, proc_params):
+def procedure_fromprev(prev_results, proc_params):
+    """
+    Determine the procedure from the previous set of results in order to remain
+    consistent.
+
+    Args:
+        prev_results:  Previous set of results to be updated with
+            new observations
+        proc_params: dictionary of processing parameters
+
+    Returns:
+        the corresponding function that will be use to generate
+         the curves
+    """
+    if prev_results['change_models']:
+        if prev_results['change_models'][0]['curve_qa'] == proc_params['CURVE_QA']['PERSIST_SNOW']:
+            return permanent_snow_procedure
+        if prev_results['change_models'][0]['curve_qa'] == proc_params['CURVE_QA']['INSUF_CLEAR']:
+            return insufficient_clear_procedure
+
+    return standard_procedure
+
+
+def fit_procedure(dates, quality, prev_results, proc_params):
     """Determine which curve fitting method to use
 
     This is based on information from the QA band
 
     Args:
+        dates: list of ordinal day numbers relative to some epoch,
+            the particular epoch does not matter.
         quality: QA information for each observation
+        prev_results:  Previous set of results to be updated with
+            new observations
         proc_params: dictionary of processing parameters
 
     Returns:
-        method: the corresponding method that will be use to generate
-         the curves
+        The corresponding function that will be use to generate
+        the curves
     """
 
     clear = proc_params.QA_CLEAR
@@ -56,8 +83,14 @@ def fit_procedure(quality, proc_params):
     clear_thresh = proc_params.CLEAR_PCT_THRESHOLD
     snow_thresh = proc_params.SNOW_PCT_THRESHOLD
 
-    if not qa.enough_clear(quality, clear, water, fill, clear_thresh):
-        if qa.enough_snow(quality, clear, water, snow, snow_thresh):
+    stat_mask = statmask(dates, np.ones_like(dates, dtype=np.bool),
+                         proc_params.STAT_ORD)
+
+    if prev_results is not None:
+        func = procedure_fromprev(prev_results, proc_params)
+
+    elif not qa.enough_clear(quality[stat_mask], clear, water, fill, clear_thresh):
+        if qa.enough_snow(quality[stat_mask], clear, water, snow, snow_thresh):
             func = permanent_snow_procedure
         else:
             func = insufficient_clear_procedure
@@ -70,7 +103,7 @@ def fit_procedure(quality, proc_params):
     return func
 
 
-def permanent_snow_procedure(dates, observations, fitter_fn, quality,
+def permanent_snow_procedure(dates, observations, fitter_fn, quality, prev_results,
                              proc_params):
     """
     Snow procedure for when there is a significant amount snow represented
@@ -87,6 +120,8 @@ def permanent_snow_procedure(dates, observations, fitter_fn, quality,
         fitter_fn: a function used to fit observation values and
             acquisition dates for each spectra.
         quality: QA information for each observation
+        prev_results:  Previous set of results to be updated with
+            new observations
         proc_params: dictionary of processing parameters
 
     Returns:
@@ -127,7 +162,7 @@ def permanent_snow_procedure(dates, observations, fitter_fn, quality,
     return (result,), processing_mask
 
 
-def insufficient_clear_procedure(dates, observations, fitter_fn, quality,
+def insufficient_clear_procedure(dates, observations, fitter_fn, quality, prev_results,
                                  proc_params):
     """
     insufficient clear procedure for when there is an insufficient quality
@@ -144,6 +179,8 @@ def insufficient_clear_procedure(dates, observations, fitter_fn, quality,
         fitter_fn: a function used to fit observation values and
             acquisition dates for each spectra.
         quality: QA information for each observation
+        prev_results:  Previous set of results to be updated with
+            new observations
         proc_params: dictionary of processing parameters
 
     Returns:
@@ -184,7 +221,8 @@ def insufficient_clear_procedure(dates, observations, fitter_fn, quality,
     return (result,), processing_mask
 
 
-def standard_procedure(dates, observations, fitter_fn, quality, proc_params):
+def standard_procedure(dates, observations, fitter_fn, quality, prev_results,
+                       proc_params):
     """
     Runs the core change detection algorithm.
 
@@ -212,6 +250,8 @@ def standard_procedure(dates, observations, fitter_fn, quality, proc_params):
         fitter_fn: a function used to fit observation values and
             acquisition dates for each spectra.
         quality: QA information for each observation
+        prev_results:  Previous set of results to be updated with
+            new observations
         proc_params: dictionary of processing parameters
 
     Returns:
@@ -226,7 +266,7 @@ def standard_procedure(dates, observations, fitter_fn, quality, proc_params):
     curve_qa = proc_params.CURVE_QA
 
     log.debug('Build change models - dates: %s, obs: %s, '
-              'meow_size: %s, peek_size: %s',
+              'initial meow_size: %s, initial peek_size: %s',
               dates.shape[0], observations.shape, meow_size, defpeek)
 
     # First we need to filter the observations based on the spectra values
@@ -250,18 +290,40 @@ def standard_procedure(dates, observations, fitter_fn, quality, proc_params):
     processing_mask = qa.standard_procedure_filter(observations, quality,
                                                    dates, proc_params)
 
+    log.debug('Processing mask initial count: %s', np.sum(processing_mask))
+
+    # TODO Temporary setup on this to just get it going
+    stat_mask = statmask(dates, processing_mask, proc_params.STAT_ORD)
+    log.debug('Stat mask count: %s', np.sum(stat_mask))
+
+    # Start with a previous set results or start fresh. These edits unfortunately
+    # make this even more procedural, but edits to avoid this would take more
+    # significant time.
+    if prev_results:
+        results = results_fromprev(prev_results)
+        processing_mask = prevmask(processing_mask, dates, prev_results['processing_mask'], results)
+
+        log.debug('Processing mask using previous results: %s', np.sum(processing_mask))
+        js = jumpstart(results, dates[processing_mask], proc_params)
+        model_window, previous_end = js
+
+        if model_window.start == 0:
+            start = True
+        else:
+            start = False
+
+    else:
+        results = []
+        model_window = slice(0, meow_size)
+        previous_end = 0
+        start = True
+
     obs_count = np.sum(processing_mask)
-
-    log.debug('Processing mask initial count: %s', obs_count)
-
-    # Accumulator for models. This is a list of ChangeModel named tuples
-    results = []
 
     if obs_count <= meow_size:
         return results, processing_mask
 
-    # TODO Temporary setup on this to just get it going
-    peek_size = adjustpeek(dates[processing_mask], defpeek)
+    peek_size = adjustpeek(dates[stat_mask], defpeek)
     proc_params.PEEK_SIZE = peek_size
     proc_params.CHANGE_THRESHOLD = adjustchgthresh(peek_size, defpeek,
                                                    proc_params.CHANGE_THRESHOLD)
@@ -269,18 +331,10 @@ def standard_procedure(dates, observations, fitter_fn, quality, proc_params):
     log.debug('Peek size: %s', proc_params.PEEK_SIZE)
     log.debug('Chng thresh: %s', proc_params.CHANGE_THRESHOLD)
 
-    # Initialize the window which is used for building the models
-    model_window = slice(0, meow_size)
-    previous_end = 0
-
-    # Only capture general curve at the beginning, and not in the middle of
-    # two stable time segments
-    start = True
-
     # Calculate the variogram/madogram that will be used in subsequent
     # processing steps. See algorithm documentation for further information.
-    variogram = adjusted_variogram(dates[processing_mask],
-                                   observations[:, processing_mask])
+    variogram = adjusted_variogram(dates[stat_mask],
+                                   observations[:, stat_mask])
     log.debug('Variogram values: %s', variogram)
 
     # Only build models as long as sufficient data exists.
@@ -389,7 +443,7 @@ def initialize(dates, observations, fitter_fn, model_window, processing_mask,
     period = dates[processing_mask]
     spectral_obs = observations[:, processing_mask]
 
-    log.debug('Initial %s', model_window)
+    log.debug('Initial model window %s', model_window)
     models = None
     while model_window.stop + meow_size < period.shape[0]:
         # Finding a sufficient window of time needs to run
@@ -471,6 +525,7 @@ def initialize(dates, observations, fitter_fn, model_window, processing_mask,
             log.debug('Stable start found: %s', model_window)
             break
 
+    log.debug(f'Final model window {model_window}')
     return model_window, models, processing_mask
 
 
@@ -531,7 +586,7 @@ def lookforward(dates, observations, model_window, fitter_fn, processing_mask,
     spectral_obs = observations[:, processing_mask]
 
     # Used for comparison purposes
-    fit_span = period[model_window.stop - 1] - period[model_window.start]
+    fit_span = span(period, fit_window)
 
     # stop is always exclusive
     while model_window.stop + peek_size <= period.shape[0]:
@@ -541,7 +596,7 @@ def lookforward(dates, observations, model_window, fitter_fn, processing_mask,
         peek_window = slice(model_window.stop, model_window.stop + peek_size)
 
         # Used for comparison against fit_span
-        model_span = period[model_window.stop - 1] - period[model_window.start]
+        model_span = span(period, model_window)
 
         log.debug('Detecting change for %s', peek_window)
 
@@ -550,10 +605,9 @@ def lookforward(dates, observations, model_window, fitter_fn, processing_mask,
         # If the number of observations that the current fitted models
         # expand past a threshold, then we need to fit new ones.
         if not models or model_window.stop - model_window.start < 24 or model_span >= 1.33 * fit_span:
-            fit_span = period[model_window.stop - 1] - period[
-                model_window.start]
-
             fit_window = model_window
+            fit_span = span(period, fit_window)
+
             log.debug('Retrain models')
             models = [fitter_fn(period[fit_window], spectrum,
                                 fit_max_iter, avg_days_yr, num_coefs)

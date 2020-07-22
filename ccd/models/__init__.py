@@ -1,4 +1,5 @@
 from collections import namedtuple
+import copy
 
 # TODO: establish standardize object for handling models used for general
 # regression purposes. This will truly make the code much more modular.
@@ -58,3 +59,28 @@ def results_to_changemodel(fitted_models, start_day, end_day, break_day,
             'swir1': spectral_models[4],
             'swir2': spectral_models[5],
             'thermal': spectral_models[6]}
+
+
+def results_fromprev(prev):
+    """
+    Load a previous set results to begin updating with some new forward
+    observations. This will trim off any segments identified as "end fits", so
+    that they can possibly updated with more stable segments.
+
+    Args:
+        prev: dictionary of previous pyccd results
+
+    Returns:
+        list of dictionaries
+    """
+    prev_models = sorted(prev['change_models'], key=lambda x: x['start_day'])
+
+    for idx, model in enumerate(prev_models[::-1]):
+        if model['change_probability'] == 0:
+            continue
+        elif idx == 0:
+            return [copy.deepcopy(m) for m in prev_models]
+        else:
+            return [copy.deepcopy(m) for m in prev_models[:-idx]]
+
+    return []

@@ -305,3 +305,93 @@ def adjustchgthresh(peek, defpeek, defthresh):
         thresh = chi2.ppf(pt_cg, 5)
 
     return thresh
+
+
+def span(dates, window):
+    """
+    Helper function to determine the span of a slice window over the dates array
+
+    Args:
+        dates: list of ordinal day numbers relative to some epoch,
+            the particular epoch does not matter.
+        window: python slice object
+
+    Returns:
+        int
+    """
+    return dates[window.stop - 1] - dates[window.start]
+
+
+def statmask(dates, processing_mask, max_ord):
+    """
+    Create the mask used for the one time statistics, but limit their calculation
+    based on a maximum ordinal date.
+
+    Args:
+        dates: list of ordinal day numbers relative to some epoch,
+            the particular epoch does not matter.
+        processing_mask: processing mask after initial QA filtering
+        max_ord: maximum ordinal date to include in the calculations
+
+    Returns:
+        bool mask
+    """
+    stat_mask = np.copy(processing_mask)
+    stat_mask[dates > max_ord] = 0
+    return stat_mask
+
+
+def prevmask(proc_mask, dates, prev_mask, prev_results):
+    """
+    Load the previous set of results and "add" its processing mask to the current
+    run's mask.
+
+    Args:
+        proc_mask: the current mask
+        dates: list of ordinal day numbers relative to some epoch,
+            the particular epoch does not matter.
+        prev_mask: Processing mask used for the previous set of results
+        prev_results: Previous set of results to be updated with
+            new observations
+
+    Returns:
+        1-d boolean ndarray
+    """
+    if len(prev_results) == 0:
+        return proc_mask
+
+    # We do not want to deal with possible edge scenarios related to skipped and
+    # masked observations related to initialization from the previous run
+    prev_mask = np.asarray(prev_mask, dtype=np.bool)
+    stop = np.argwhere(dates == prev_results[-1]['break_day'])[0][0]
+
+    proc_mask[:stop] = prev_mask[:stop]
+
+    return proc_mask
+
+
+def jumpstart(prev_results, dates, proc_params):
+    """
+    Jumpstart the fitting and pick up from a previous set of results. This
+    essentially returns a set of variables that should allow us to pick up where
+    the previous procedure left off at.
+
+    Args:
+        prev_results: Previous set of results to be updated with
+            new observations
+        dates: array of ordinal day numbers relative to some epoch,
+            the particular epoch does not matter.
+        proc_params: dictionary of processing parameters
+
+    Returns:
+        model_window, previous_end
+    """
+    meow = proc_params.MEOW_SIZE
+
+    # No results, we should try and let the procedure run through from the
+    # beginning.
+    if len(prev_results) == 0:
+        return slice(0, meow), 0
+
+    start = np.argwhere(dates == prev_results[-1]['break_day'])[0][0]
+    return slice(start, start + meow), start
