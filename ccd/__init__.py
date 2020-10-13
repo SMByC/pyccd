@@ -5,11 +5,11 @@ from ccd.procedures import fit_procedure as __determine_fit_procedure
 import numpy as np
 from ccd import app, math_utils, qa
 import importlib
-from .version import __version__
-from .version import __algorithm__ as algorithm
+from .version import __version
 from .version import __name
 
-log = logging.getLogger(__name)
+log       = logging.getLogger(__name)
+algorithm = ':'.join([__name, __version])
 
 
 def attr_from_str(value):

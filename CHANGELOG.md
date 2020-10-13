@@ -1,6 +1,6 @@
 # pyccd change log
 All notable changes to this project will be documented in this file. Changes before 1.0.0.b1 are not tracked.
-## Next Release
+## [2020.10.10]
 ### Added
  - Parameter STAT_ORD to constrain calculations that normally look at the entire time series
  - Support for building off a previous set of PYCCD results

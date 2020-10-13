@@ -149,6 +149,7 @@ Contributions are most welcome.
 5. Submit pull request to the appropriate branch (e.g. 1,x)
 
 ## Versions
+
 PyCCD previously followed MAJOR.MINOR.PATCH.LABEL semantic versioning but has
 changed to date based semantic versioning, thus: YYYY.MM.DD[.HH.MM.SS][-label].
 

@@ -33,8 +33,8 @@ setup(
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
 
-    # __version__ is defined in version.py
-    version=__version__,
+    # __version is defined in version.py
+    version=__version,
 
     description='Python implementation of Continuous Change Detection',
     long_description=readme(),
