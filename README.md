@@ -5,7 +5,7 @@ pyccd creates change segments from Landsat timeseries data
 ## Using PyCCD
 ```python
 >>> import ccd
->>> results = ccd.detect(dates, blues, greens, reds, nirs, swir1s, swir2s, thermals, qas)
+>>> results = ccd.detect(dates, blues, greens, reds, nirs, swir1s, swir2s, thermals, qas, prev_results)
 >>>
 >>> type(results)
 <class 'dict'>
