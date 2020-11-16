@@ -156,7 +156,6 @@ changed to date based semantic versioning, thus: YYYY.MM.DD[.HH.MM.SS][-label].
 PyCCD's version is defined by the ```ccd/version.py/__version__``` attribute.
 
 ## References
-* IPDS Identifier: IP-118035
 * [PyCCD Digital Object Identifier 10.5066/P90V8IIX](https://doi.org/10.5066/P90V8IIX)
 * [Test Data](docs/TestData.md)
 * [Landsat Band Specifications](http://landsat.usgs.gov/band_designations_landsat_satellites.php)
