@@ -51,3 +51,69 @@ def test_calc_residuals():
 
 def test_kelvin_to_celsius():
     pass
+
+
+def test_check_variogram():
+    test1 = np.array([np.nan])
+    test2 = np.arange(6)
+
+    assert check_variogram(test1) is False
+    assert check_variogram(test2) is True
+
+
+def test_calc_variogram():
+    # Base test
+    test_obs = np.arange(4).reshape(2, -1)
+    ans = np.array([1, 1], dtype=float)
+    assert np.array_equal(ans, calculate_variogram(test_obs))
+
+    # Test some different spectral spacing
+    test_obs = np.array([[1, 3] * 2,
+                         [4, 1] * 2])
+    ans = np.array([2, 3], dtype=float)
+    assert np.array_equal(ans, calculate_variogram(test_obs))
+
+    # Test empty 2-d array, the detect function should prevent any empty 1-d arrays
+    test_obs = np.array([[]])
+    # ans = np.array([np.nan])
+    assert all(np.isnan(calculate_variogram(test_obs)))
+
+    # Test single observation
+    test_obs = np.array([[1]])
+    # ans = np.array([np.nan])
+    assert all(np.isnan(calculate_variogram(test_obs)))
+
+
+def test_adjusted_variogram():
+    # Base test
+    test_obs = np.stack([np.arange(35),
+                         np.arange(35)])
+    test_dates = np.arange(35)
+    ans = np.array([31, 31], dtype=float)
+    assert np.array_equal(ans, adjusted_variogram(test_dates, test_obs))
+
+    # Test single Landsat sensor spacing
+    test_obs = np.array([[1, 2],
+                         [6, 5]])
+    test_dates = np.arange(16 * 2, step=16)
+    ans = np.array([1, 1], dtype=float)
+    assert np.array_equal(ans, adjusted_variogram(test_dates, test_obs))
+
+    test_obs = np.array([[1, 2, 3],
+                         [6, 5, 4]])
+    test_dates = np.arange(16 * 3, step=16)
+    ans = np.array([2, 2], dtype=float)
+    assert np.array_equal(ans, adjusted_variogram(test_dates, test_obs))
+
+    # Test empty 2-d array, the detect function should prevent any empty 1-d arrays
+    test_obs = np.array([[]])
+    test_dates = np.array([])
+    # ans = np.array([np.nan])
+    assert all(np.isnan(adjusted_variogram(test_dates, test_obs)))
+
+    # Test single observation
+    test_obs = np.array([[1],
+                         [6]])
+    test_dates = np.arange(16, step=16)
+    # ans = np.array([np.nan])
+    assert all(np.isnan(adjusted_variogram(test_dates, test_obs)))

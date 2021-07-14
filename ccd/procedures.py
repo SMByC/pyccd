@@ -24,12 +24,32 @@ import logging
 import numpy as np
 
 from ccd import qa
-from ccd.change import enough_samples, enough_time,\
-    update_processing_mask, stable, determine_num_coefs, calc_residuals, \
-    find_closest_doy, change_magnitude, detect_change, detect_outlier, \
-    adjustpeek, adjustchgthresh, statmask, jumpstart, prevmask, span
-from ccd.models import results_to_changemodel, tmask, results_fromprev
-from ccd.math_utils import kelvin_to_celsius, adjusted_variogram, euclidean_norm
+
+from ccd.change import adjustpeek
+from ccd.change import adjustchgthresh
+from ccd.change import calc_residuals
+from ccd.change import change_magnitude
+from ccd.change import detect_change
+from ccd.change import detect_outlier
+from ccd.change import determine_num_coefs
+from ccd.change import enough_samples
+from ccd.change import enough_time
+from ccd.change import find_closest_doy
+from ccd.change import jumpstart
+from ccd.change import prevmask
+from ccd.change import span
+from ccd.change import stable
+from ccd.change import statmask
+from ccd.change import update_processing_mask
+
+from ccd.models import results_to_changemodel
+from ccd.models import results_fromprev
+from ccd.models import tmask
+
+from ccd.math_utils import adjusted_variogram
+from ccd.math_utils import check_variogram
+from ccd.math_utils import euclidean_norm
+from ccd.math_utils import kelvin_to_celsius
 
 
 log = logging.getLogger(__name__)
@@ -335,6 +355,11 @@ def standard_procedure(dates, observations, fitter_fn, quality, prev_results,
     # processing steps. See algorithm documentation for further information.
     variogram = adjusted_variogram(dates[stat_mask],
                                    observations[:, stat_mask])
+
+    if not check_variogram(variogram):
+        log.debug('Variogram failed check')
+        return results
+
     log.debug('Variogram values: %s', variogram)
 
     # Only build models as long as sufficient data exists.

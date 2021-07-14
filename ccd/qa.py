@@ -159,6 +159,9 @@ def ratio_cloud(quality, fill, cloud):
     cloud_count = count_value(quality, cloud)
     total = count_total(quality, fill)
 
+    if total == 0:
+        return 0
+
     return cloud_count / total
 
 

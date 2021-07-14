@@ -112,6 +112,8 @@ def __check_inputs(dates, quality, spectra):
     """
     # Make sure we only have one dimension
     assert dates.ndim == 1
+    # Make sure we have data
+    assert dates.shape[0] > 0
     # Make sure quality is the same
     assert dates.shape == quality.shape
     # Make sure there is spectral data for each date

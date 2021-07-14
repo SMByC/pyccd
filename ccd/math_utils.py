@@ -12,6 +12,7 @@ from functools import wraps
 import numpy as np
 from scipy.stats import mode
 
+
 def adjusted_variogram(dates, observations):
     """
     Calculate a modified first order variogram/madogram.
@@ -34,9 +35,12 @@ def adjusted_variogram(dates, observations):
     for idx in range(dates.shape[0]):
         var = dates[1 + idx:] - dates[:-idx - 1]
 
-        majority = mode(var)[0][0]
+        majority, _ = mode(var)
 
-        if majority > 30:
+        if len(majority) == 0:
+            continue
+
+        if majority[0] > 30:
             diff = observations[:, 1 + idx:] - observations[:, :-idx - 1]
             ids = var > 30
 
@@ -151,7 +155,7 @@ def calculate_variogram(observations):
     Helper method to make subsequent code clearer
 
     Args:
-        observations: spectral band values
+        observations: 2-d ndarray of spectral band values
 
     Returns:
         1-d ndarray representing the variogram values
@@ -207,3 +211,19 @@ def count_value(vector, val):
         int
     """
     return np.sum(mask_value(vector, val))
+
+
+def check_variogram(vario):
+    """
+    Check the observational variogram values to ensure they are within some reason.
+
+    Args:
+        vario: 2-d ndarray
+
+    Returns:
+        bool
+    """
+    if any(np.isnan(vario)):
+        return False
+
+    return True

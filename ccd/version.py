@@ -3,4 +3,4 @@ as well as ccd/__init__.py.  If vals were all defined in __init__.py install wou
 """
 
 __name = 'lcmap-pyccd'
-__version = '2020.10.10'
+__version = '2021.07.14'

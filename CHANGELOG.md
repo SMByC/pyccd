@@ -1,11 +1,15 @@
 # pyccd change log
 All notable changes to this project will be documented in this file. Changes before 1.0.0.b1 are not tracked.
-## [2020.10.10]
+## 2021.07.14
+### Bug Fixes  
+ - Edge case exceptions related to exceptionally low observation counts that are also temporally disparate
+
+## 2020.10.10
 ### Added
  - Parameter STAT_ORD to constrain calculations that normally look at the entire time series
  - Support for building off a previous set of PYCCD results
 
-## [2018.10.17]
+## 2018.10.17
 ### Added
  - Additional testing for main detect() method to ensure all the code is flexed to some degree
  - link to Algorithm Description Document (ADD)
@@ -21,7 +25,7 @@ All notable changes to this project will be documented in this file. Changes bef
  - parameters.yaml file dependency
  - docs directory (superseded by ADD)
   
-## [2018.03.12]
+## 2018.03.12
 ### Added
  - Number of parameters option for RMSE, for influencing the calculation based on model complexity versus your sample size.
 
@@ -33,7 +37,7 @@ All notable changes to this project will be documented in this file. Changes bef
  - The click and cachetools dependencies as they were unused.
  - procedure from the ccd.detect dictionary return. This is redundant with the curve fit information returned with each segment.
 
-## [2017.10.27]
+## 2017.10.27
 ### Added
  - Probability that any given observation will be cloud, snow, or water, based on the QA information passed in
  - Efficiencies to filling out the lasso coefficient matrix
@@ -43,15 +47,15 @@ All notable changes to this project will be documented in this file. Changes bef
  - Removed unused py files that may have been causing confusion
  - Results should use standard Python types, this helps with any downstream applications
 
-## [2017.08.18]
+## 2017.08.18
 ### Added
  - Conditional treatment of cirrus confidence and terrain occlusion bits from Landsat 8 pixelQA
 
-## [2017.06.20]
+## 2017.06.20
 ### Bug Fixes
  - The lasso coefficient matrix was not being populated correctly when the number of requested coefficients was 8.
 
-## [2017.6.8]
+## 2017.06.08
 ### Added
  - Check the inputs to make sure that they are appropriately sized relative to each-other
 
@@ -61,7 +65,7 @@ All notable changes to this project will be documented in this file. Changes bef
 ### Bug Fixes
  - fixed Tmask regression to include a column of ones
 
-## [1.4.0] - 2017-4-26
+## 1.4.0 - 2017-04-26
 ### Added
  - this file
  - can now pass a processing parameter dictionary to ccd.detect, key/values will override parameters.yaml
@@ -79,7 +83,7 @@ All notable changes to this project will be documented in this file. Changes bef
  - simplified logic and removed find_time_index method
  - changed adjusted variogram logic to match the Matlab approach 1:1
 
-## [1.3.1] - 2017-4-10
+## 1.3.1 - 2017-04-10
 ### Changed
  - move duplicate date trimming to occur after other masking is done
  - ensure_ndarray_input to use keyword args better [broken]
@@ -88,20 +92,20 @@ All notable changes to this project will be documented in this file. Changes bef
  - removed errant print statement
  - fixed the adjusted variogram calculation introduced last version
 
-## [1.3.0] - 2017-3-30
+## 1.3.0 - 2017-03-30
 ### Changed
  - robust iterative reweighted least squares for the regression used by the partial Tmask, alignment with original Matlab CCDC v12.30
  - updated variogram calculation to try and only use observations > 30 days a part
  - TestData.md now copy/pastable
 
-## [1.1.0] - 2017-3-2
+## 1.1.0 - 2017-03-02
 ### Added
  - auto-deploy to pypi from master
  
 ### Bug Fixes
  - per band change magnitudes based on the final peek window of a time segment
 
-## [1.0.4.b1] - 2017-02-24
+## 1.0.4.b1 - 2017-02-24
 ### Added
  - travis-ci automated testing and deployment setup
  - better pypi interactions
@@ -113,22 +117,9 @@ All notable changes to this project will be documented in this file. Changes bef
 ### Bug Fixes
  - updated setup.py for numpy >= 1.10
 
-## [1.0.0.b1] - 2017-01-31
+## 1.0.0.b1 - 2017-01-31
  - Initial beta release for evaluation efforts
  - Change tracking start
 
 ## 1.0.0.a1 - 2016-10-13
  - Proof of concept for moving the CCDC code base to python
-
-[1.0.0.b1]: https://code.usgs.gov/lcmap/pyccd/compare/1.0.0.a1...1.0.0.b1
-[1.0.4.b1]: https://code.usgs.gov/lcmap/pyccd/compare/1.0.0.b1...v1.0.4.b1
-[1.1.0]: https://code.usgs.gov/lcmap/pyccd/compare/v1.0.4.b1...v1.1.0
-[1.3.0]: https://code.usgs.gov/lcmap/pyccd/compare/v1.1.0...v1.3.0
-[1.3.1]: https://code.usgs.gov/lcmap/pyccd/compare/v1.3.0...v1.3.1
-[1.4.0]: https://code.usgs.gov/lcmap/pyccd/compare/v1.3.1...v1.4.0
-[2017.6.8]: https://code.usgs.gov/lcmap/pyccd/compare/v1.4.0...v2017.6.8
-[2017.06.20]: https://code.usgs.gov/lcmap/pyccd/compare/v2017.6.8...v2017.06.20
-[2017.08.18]: https://code.usgs.gov/lcmap/pyccd/compare/v2017.06.20...v2017.08.18
-[2017.10.27]: https://code.usgs.gov/lcmap/pyccd/compare/v2017.08.18...v2017.10.27
-[2018.03.12]: https://code.usgs.gov/lcmap/pyccd/compare/v2017.10.27...v2018.03.12
-[2018.10.17]: https://code.usgs.gov/lcmap/pyccd/compare/v2017.03.12...v2018.10.17

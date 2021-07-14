@@ -292,13 +292,40 @@ def find_closest_doy(dates, date_idx, window, num):
 
 
 def adjustpeek(dates, defpeek):
-    delta = np.median(np.diff(dates))
+    """
+    Adjust the number of observations looked at for the forward processing window
+    based on observation date characteristics
+
+    Args:
+        dates: 1-d ndarray of observation dates
+        defpeek: default number of observations
+
+    Returns:
+        int number of observations to use
+    """
+    diffs = np.diff(dates)
+
+    if len(diffs) == 0:
+        return defpeek
+    
+    delta = np.median(diffs) + .001
     adj_peek = int(np.round(defpeek * 16 / delta))
 
     return adj_peek if adj_peek > defpeek else defpeek
 
 
 def adjustchgthresh(peek, defpeek, defthresh):
+    """
+    Adjust the change threshold if the peek window size has changed
+
+    Args:
+        peek: peek window size determined from adjustpeek
+        defpeek: default window size
+        defthresh: default change threshold
+
+    Returns:
+        float change threshold to use
+    """
     thresh = defthresh
     if peek > defpeek:
         pt_cg = 1 - (1 - 0.99) ** (defpeek / peek)

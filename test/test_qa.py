@@ -7,8 +7,9 @@ from ccd.app import get_default_params
 
 clear = 0
 water = 1
-fill = 255
+cloud = 2
 snow = 3
+fill = 255
 clear_thresh = 0.25
 snow_thresh = 0.75
 
@@ -103,3 +104,35 @@ def test_duplicate_values():
                     True, False], dtype=bool)
 
     assert np.array_equal(ans, mask_duplicate_values(arr))
+
+
+def test_ratio_cloud():
+    # All fill
+    arr = np.array([fill, fill, fill, fill])
+    ans = 0
+
+    assert ans == ratio_cloud(arr, fill, cloud)
+
+    # Half cloud
+    arr = np.array([cloud, cloud, clear, clear])
+    ans = 0.5
+
+    assert ans == ratio_cloud(arr, fill, cloud)
+
+    # Half cloud / half fill
+    arr = np.array([cloud, cloud, fill, fill])
+    ans = 1.0
+
+    assert ans == ratio_cloud(arr, fill, cloud)
+
+    # All cloud
+    arr = np.array([cloud, cloud, cloud, cloud])
+    ans = 1.0
+
+    assert ans == ratio_cloud(arr, fill, cloud)
+
+    # Empty observations
+    arr = np.array([])
+    ans = 0
+
+    assert ans == ratio_cloud(arr, fill, cloud)
