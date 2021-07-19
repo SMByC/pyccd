@@ -100,3 +100,29 @@ def test_sort_dates():
     ans = np.array([0, 2, 4, 1, 3])
 
     assert np.array_equal(ans, ccd.__sort_dates(arr))
+
+
+def test_variogramfailure():
+    """
+    Flex the code that ends with math_utils.check_variogram returning a false
+    Expand test as more conditions are added/found
+    """
+    data = {'qas': [1],
+            'reds': [500],
+            'blues': [500],
+            'greens': [500],
+            'nirs': [500],
+            'swir1s': [500],
+            'swir2s': [500],
+            'thermals': [2781],
+            'dates': [500]}
+
+    ans_changemodels = []
+    ans_processmask = [1]
+
+    res = ccd.detect(**data, params={'QA_BITPACKED': False,
+                                     'MEOW_SIZE': 0})
+
+    assert ans_changemodels == res['change_models']
+    assert ans_processmask == res['processing_mask']
+

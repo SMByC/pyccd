@@ -358,7 +358,7 @@ def standard_procedure(dates, observations, fitter_fn, quality, prev_results,
 
     if not check_variogram(variogram):
         log.debug('Variogram failed check')
-        return results
+        return results, processing_mask
 
     log.debug('Variogram values: %s', variogram)
 

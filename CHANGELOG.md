@@ -1,5 +1,9 @@
 # pyccd change log
 All notable changes to this project will be documented in this file. Changes before 1.0.0.b1 are not tracked.
+## 2021.07.19
+### Bug Fixes
+ - Fix a return statement inside of the standard procedure that was missing the processing mask
+
 ## 2021.07.14
 ### Bug Fixes  
  - Edge case exceptions related to exceptionally low observation counts that are also temporally disparate
