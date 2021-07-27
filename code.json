@@ -3,7 +3,7 @@
     "name": "PyCCD",
     "organization": "U.S. Geological Survey",
     "description": "Change detection algorithm for Land Change Monitoring, Assessment and Projection (LCMAP)",
-    "version": "2020-10-10",
+    "version": "2021.07.19",
     "status": "Production",
     "permissions": {
 	"usageType": "openSource",
@@ -35,7 +35,7 @@
 	"email": "dhill@contractor.usgs.gov"
     },
     "updated": {
-	"metadataLastUpdated": "2020-11-16"
+	"metadataLastUpdated": "2021-07-27"
     }
     }
 ]
