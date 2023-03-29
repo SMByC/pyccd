@@ -389,7 +389,7 @@ def prevmask(proc_mask, dates, prev_mask, prev_results):
 
     # We do not want to deal with possible edge scenarios related to skipped and
     # masked observations related to initialization from the previous run
-    prev_mask = np.asarray(prev_mask, dtype=np.bool)
+    prev_mask = np.asarray(prev_mask, dtype=bool)
     stop = np.argwhere(dates == prev_results[-1]['break_day'])[0][0]
 
     proc_mask[:stop] = prev_mask[:stop]

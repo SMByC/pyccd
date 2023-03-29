@@ -103,7 +103,7 @@ def fit_procedure(dates, quality, prev_results, proc_params):
     clear_thresh = proc_params.CLEAR_PCT_THRESHOLD
     snow_thresh = proc_params.SNOW_PCT_THRESHOLD
 
-    stat_mask = statmask(dates, np.ones_like(dates, dtype=np.bool),
+    stat_mask = statmask(dates, np.ones_like(dates, dtype=bool),
                          proc_params.STAT_ORD)
 
     if prev_results is not None:

@@ -179,7 +179,7 @@ def mask_duplicate_values(vector):
     Returns:
         1-d boolean ndarray
     """
-    mask = np.zeros_like(vector, dtype=np.bool)
+    mask = np.zeros_like(vector, dtype=bool)
     mask[np.unique(vector, return_index=True)[1]] = 1
 
     return mask
