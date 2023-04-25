@@ -120,9 +120,9 @@ def __check_inputs(dates, quality, spectra):
     assert dates.shape[0] == spectra.shape[1]
 
 
-def detect(dates, blues, greens, reds, nirs,
-           swir1s, swir2s, thermals, qas,
-           prev_results=None, params=None):
+def detect(dates, blues, greens, reds, nirs, swir1s, swir2s, thermals,
+           nbrs, ndvis, evis, evi2s, brightnesss, greennesss, wetnesss,
+           qas, prev_results=None, params=None):
     """Entry point call to detect change
 
     No filtering up-front as different procedures may do things
@@ -156,9 +156,8 @@ def detect(dates, blues, greens, reds, nirs,
     dates = np.asarray(dates)
     qas = np.asarray(qas)
 
-    spectra = np.stack((blues, greens,
-                        reds, nirs, swir1s,
-                        swir2s, thermals))
+    spectra = np.stack((blues, greens, reds, nirs, swir1s, swir2s, thermals,
+                        nbrs, ndvis, evis, evi2s, brightnesss, greennesss, wetnesss))
 
     __check_inputs(dates, qas, spectra)
 

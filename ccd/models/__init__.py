@@ -58,7 +58,15 @@ def results_to_changemodel(fitted_models, start_day, end_day, break_day,
             'nir': spectral_models[3],
             'swir1': spectral_models[4],
             'swir2': spectral_models[5],
-            'thermal': spectral_models[6]}
+            'thermal': spectral_models[6],
+            # indices
+            'nbr': spectral_models[7],
+            'ndvi': spectral_models[8],
+            'evi': spectral_models[9],
+            'evi2': spectral_models[10],
+            'brightness': spectral_models[11],
+            'greenness': spectral_models[12],
+            'wetness': spectral_models[13]}
 
 
 def results_fromprev(prev):

@@ -841,7 +841,7 @@ def catch(dates, observations, fitter_fn, processing_mask, model_window,
                                     start_day=period[model_window.start],
                                     end_day=period[model_window.stop - 1],
                                     break_day=break_day,
-                                    magnitudes=np.zeros(shape=(7,)),
+                                    magnitudes=np.zeros(shape=(14,)),
                                     observation_count=(
                                         model_window.stop - model_window.start),
                                     change_probability=0,
